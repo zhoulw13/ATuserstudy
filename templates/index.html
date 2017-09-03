@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
         <title>AT User Study</title>
     </head>
     <body>
@@ -25,5 +26,9 @@
             </ul>
            </div>
         </nav>
+		<form method=POST style="margin:20px" action='/'>
+		  {% csrf_token %}
+		  <p><input type=submit value="emmmmm" class="btn btn-default" name=action></p>
+		</form>
     </body>
 </html>

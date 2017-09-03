@@ -1,14 +1,15 @@
 ﻿<!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
 <html>
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
         <script src="{% static '/js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
         <title>AT User Study</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
           <a class="navbar-brand" href="/">AT</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -25,5 +26,40 @@
             </ul>
            </div>
         </nav>
+		<form method=POST style="margin:20px" action='/label/'>
+			{% csrf_token %}
+			<div align="center" style="margin-top:100px"><table class="table" border="1px">
+				{% for image in images %}
+				<thead class="thead-inverse">
+					<tr align="center">
+						<th>Index</th>
+						<th>Original Image</th>
+						{% for method in methods %}
+						<th>{{forloop.counter}}</th>
+						{% endfor %}
+					</tr>
+				</thead>
+				<tbody>
+					
+					<tr align="center">
+						<th scope="row">{{forloop.counter}}</th>
+						<td><img src="/static/img/origin/{{ image.path }}/"></td>
+						<div class="input-group">
+							{% for method in methods %}
+							<td><label><span class="input-group-addon">
+								  <input type="radio" name="{{forloop.parentloop.counter}}" value="{{method.name}}" />
+								  <img src="/static/img/{{method.name}}/{{method.prefix}}{{ image.path }}/">
+							</span></label></td>
+							{% endfor %}
+						</div>
+					</tr>
+					
+				</tbody>
+				{% endfor %}
+			</table></div>
+			<div class="col-md-4 text-center"> 
+				<input align="center" type=submit value="提交" class="btn btn-primary btn-lg" name=action>
+			</div>
+		</form>
     </body>
 </html>
