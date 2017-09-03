@@ -11,7 +11,7 @@ def index(request):
 	return render(request, "index.html", {})
 
 def label(request):
-	return HttpResponse('hello')
+	return render(request, "label.html", {})
 
 def result(request):
-	return HttpResponse('hello')
+	return render(request, "result.html", {})
