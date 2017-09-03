@@ -8,6 +8,7 @@ from survey import models
 from django.conf import settings
 import os 
 from random import shuffle
+from django.db.models import F
 # Create your views here.
 
 
@@ -55,9 +56,23 @@ def label(request):
 			'methods':methodlist,
 			})
 	else:
-		print request.POST
-		print request.GET
+		for key in request.POST:
+			if key.endswith('.jpg'):
+				m = models.Method.objects.get(name=request.POST[key])
+				i = models.Image.objects.get(name=key)
+				models.Vote.objects.filter(method_id=m.id, image_id=i.id).update(vote_number=F('vote_number')+1)
 		return HttpResponseRedirect("/result/")
 
 def result(request):
-	return render(request, "result.html", {})
+	method_ids = models.Method.objects.all().values_list('id', flat=True)
+	method_names = list(models.Method.objects.all().values_list('name', flat=True))
+	counts = []
+	for method_id in method_ids:
+		counts.append(sum(list(models.Vote.objects.filter(method_id=method_id).values_list('vote_number', flat=True))))
+	percentages = [x / float(sum(counts)) for x in counts]	
+	print method_names, method_ids
+	return render(request, "result.html", {
+		'methods':method_names,
+		'counts':counts,
+		'percentages':percentages,
+		})

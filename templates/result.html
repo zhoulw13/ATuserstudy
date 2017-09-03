@@ -26,5 +26,29 @@
             </ul>
            </div>
         </nav>
+        <div align="center" style="margin-top:100px"><table class="table" border="1px">
+            <thead class="thead-inverse">
+                <tr align="center">
+                    <th>方法</th>
+                    {% for method in methods %}
+                    <th>{{method}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr align="center">
+                    <th>百分比</th>
+                    {% for percentage in percentages %}
+                    <td>{{percentage}}</td>
+                    {% endfor %}
+                </tr>
+                <tr align="center">
+                    <th>次数</th>
+                    {% for count in counts %}
+                    <td>{{count}}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table></div>
     </body>
 </html>
